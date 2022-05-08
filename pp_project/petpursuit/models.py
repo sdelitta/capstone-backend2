@@ -11,8 +11,7 @@ class Shelter(models.Model):
     on_delete=models.CASCADE, 
     related_name='shelters')
     shelterName = models.CharField(max_length=100)
-    location = models.CharField(max_length=100)
-    website = models.TextField()
+    website = models.CharField(max_length=100)
 
     def __str__(self):
         return self.shelterName
@@ -20,11 +19,12 @@ class Shelter(models.Model):
 class Canine(models.Model):
     shelter = models.ForeignKey(Shelter, 
     on_delete=models.CASCADE, 
-    related_name='canines')
+    related_name='canines', 
+    null=True)
     dogName = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
-    age = models.TextField()
-    location = models.TextField()
+    age = models.CharField(max_length=2)
+    photo_url = models.CharField(max_length=200, default = "no dice!")
 
     def __str__(self):
         return self.dogName
@@ -32,19 +32,28 @@ class Canine(models.Model):
 class Feline(models.Model):
     shelter = models.ForeignKey(Shelter, 
     on_delete=models.CASCADE, 
-    related_name='felines')
+    related_name='felines', 
+    null=True)
     catName = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
-    age = models.TextField()
-    location = models.TextField()
+    age = models.CharField(max_length=2)
+    photo_url = models.CharField(max_length=200, default = "no dice!")
 
     def __str__(self):
         return self.catName
 
 class User(models.Model):
+    # canine = models.ForeignKey(Canine, 
+    # on_delete=models.CASCADE, 
+    # related_name='users',
+    # default= models.CharField(max_length=100, default='canine_id'))
+    # feline = models.ForeignKey(Feline, 
+    # on_delete=models.CASCADE, 
+    # related_name='users',
+    # default= models.CharField(max_length=100, default= 'feline_id'))
     userName = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
-    password = models.TextField()
+    password = models.CharField(max_length=100)
 
     def __str__(self):
         return self.userName

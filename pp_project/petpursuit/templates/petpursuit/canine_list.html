@@ -1,0 +1,10 @@
+{% extends 'petpursuit/base.html' %} {% block content %}
+<h2>Canines <a href="">(+)</a></h2>
+<ul>
+  {% for canine in canines %}
+  <li>
+    <a href="{% url 'canine_detail' pk=canine.pk %}">{{ canine.dogName }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

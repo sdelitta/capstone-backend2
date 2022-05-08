@@ -1,0 +1,22 @@
+<h2>{{ shelter.shelterName }} <a href="">(edit)</a></h2>
+<h4>{{ shelter.state }}</h4>
+
+<img src="{{ shelter.photo_url }}" alt="" class="shelter-photo" />
+
+<h3>Canines <a href="">(+)</a></h3>
+<ul>
+  {% for canine in shelter.canines.all %}
+  <li>
+    <a href="{% url 'canine_detail' pk=canine.pk %}">{{ canine.dogName }}-{{ canine.breed }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<h3>Felines <a href="">(+)</a></h3>
+<ul>
+  {% for feline in shelter.felines.all %}
+  <li>
+    <a href="{% url 'feline_detail' pk=feline.pk %}">{{ feline.catName }}-{{ feline.breed }}</a>
+  </li>
+  {% endfor %}
+</ul>

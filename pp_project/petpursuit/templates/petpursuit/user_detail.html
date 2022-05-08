@@ -1,0 +1,25 @@
+{% extends 'petpursuit/base.html' %} {% block content %}
+<h2>{{ user.userName }} <a href="{% url 'user_edit' pk=user.pk %}">(edit)</a></h2>
+
+<!-- <img src="{{ user.photo_url }}" alt="" class="user-photo" /> -->
+
+<a href="{% url 'user_delete' pk=user.pk %}">Delete</a>
+
+<h3>Canines <a href="">(+)</a></h3>
+<ul>
+  {% for canine in shelter.canines.all %}
+  <li>
+    <a href="{% url 'canine_detail' pk=canine.pk %}">{{ canine.dogName }}-{{ canine.breed }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<h3>Felines <a href="">(+)</a></h3>
+<ul>
+  {% for feline in shelter.felines.all %}
+  <li>
+    <a href="{% url 'feline_detail' pk=feline.pk %}">{{ feline.catName }}-{{ feline.breed }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

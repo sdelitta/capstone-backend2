@@ -1,0 +1,12 @@
+<h2>{{ state.stateName }} <a href="">(edit)</a></h2>
+
+<img src="{{ state.photo_url }}" alt="" class="state-photo" />
+
+<h3>Shelters <a href="">(+)</a></h3>
+<ul>
+  {% for shelter in state.shelters.all %}
+  <li>
+    <a href="{% url 'shelter_detail' pk=shelter.pk %}">{{ shelter.shelterName }}</a>
+  </li>
+  {% endfor %}
+</ul>

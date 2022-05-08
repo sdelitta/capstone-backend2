@@ -1,0 +1,10 @@
+{% extends 'petpursuit/base.html' %} {% block content %}
+<h2>States <a href="">(+)</a></h2>
+<ul>
+  {% for state in states %}
+  <li>
+    <a href="{% url 'state_detail' pk=state.pk %}">{{ state.stateName }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% load static %}
+<html>
+  <head>
+    <title>PetPursuit</title>
+    <link rel="stylesheet" href="{% static 'css/petpursuit.css' %}" />
+  </head>
+  <body>
+    <h1>Welcome To PetPursuit.com</h1>
+    <nav>
+      <a href="/">States</a>
+      <a href="/shelters">Shelters</a>
+    </nav>
+    {% block content %} {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{% extends 'petpursuit/base.html' %} {% block content %}
+<h2>Shelters <a href="">(+)</a></h2>
+<ul>
+  {% for shelter in shelters %}
+  <li>
+    <a href="{% url 'shelter_detail' pk=shelter.pk %}">{{ shelter.shelterName }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
