@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from rest_framework import generics
-from .serializers import UserSerializer
+from .serializers import UserSerializer, StateSerializer, ShelterSerializer, CanineSerializer, FelineSerializer
 from .forms import StateForm, ShelterForm, CanineForm, FelineForm, UserForm
 from .models import State, Shelter, User, Canine, Feline
 
@@ -11,6 +11,14 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class State_list(generics.ListCreateAPIView):
+    queryset = State.objects.all()
+    serializer_class = UserSerializer
+
+class StateDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = State.objects.all()
+    serializer_class = StateSerializer
 
 # def state_list(request):
 #     states = State.objects.all()
