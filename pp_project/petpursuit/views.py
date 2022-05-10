@@ -1,16 +1,50 @@
 from django.shortcuts import render, redirect
-from rest_framework import generics, viewsets
+from rest_framework import generics, permissions
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer, StateSerializer, ShelterSerializer, CanineSerializer, FelineSerializer, UserCaninesSerializer, UserFelinesSerializer
-# from .forms import StateForm, ShelterForm, CanineForm, FelineForm, UserForm
 from .models import State, Shelter, User, Canine, Feline, UserCanines, UserFelines
 
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class UserList(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        return Response(users)
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = 'id'
+
+class UserCreate(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LogoutUser(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+    def post(self, request):
+        refresh_token = request.data['refresh_token']
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response(status=status.HTTP_205_RESET_CONTENT)
+
+# class UserList(generics.ListCreateAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+# class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 class StateList(generics.ListCreateAPIView):
     queryset = State.objects.all()

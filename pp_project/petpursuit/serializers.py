@@ -1,8 +1,15 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User, Canine, Feline, State, Feline, Shelter, UserFelines, UserCanines
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(min_length=8, write_only=True)
+    
     canines = serializers.HyperlinkedRelatedField(
         view_name='CanineDetail',
         many=True,
@@ -15,7 +22,17 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     )
     class Meta:
        model = User
-       fields = ('userName', 'email', 'password', 'canines', 'felines')
+       fields = ('id','email','first_name','last_name','username','password', 'canines', 'felines')
+       extra_kwargs = {'write_only': True}
+    
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
     #    fields = ('__all__')
     #    extra_fields = ('canines', 'felines')
 
@@ -59,12 +76,12 @@ class StateSerializer(serializers.ModelSerializer):
     shelters = serializers.HyperlinkedRelatedField(
         view_name='ShelterDetail',
         many=True,
-        read_only=True
+        read_only=True,
     )
 
     class Meta:
        model = State
-       fields = ('__all__')
+       fields = ('stateName', 'shelters')
 
 class ShelterSerializer(serializers.HyperlinkedModelSerializer):
     state = serializers.HyperlinkedRelatedField(
