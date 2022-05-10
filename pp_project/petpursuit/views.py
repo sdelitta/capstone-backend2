@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from rest_framework import generics
-from .serializers import UserSerializer, StateSerializer, ShelterSerializer, CanineSerializer, FelineSerializer
-from .forms import StateForm, ShelterForm, CanineForm, FelineForm, UserForm
-from .models import State, Shelter, User, Canine, Feline
+from rest_framework import generics, viewsets
+from .serializers import UserSerializer, StateSerializer, ShelterSerializer, CanineSerializer, FelineSerializer, UserCaninesSerializer, UserFelinesSerializer
+# from .forms import StateForm, ShelterForm, CanineForm, FelineForm, UserForm
+from .models import State, Shelter, User, Canine, Feline, UserCanines, UserFelines
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -12,13 +12,58 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class State_list(generics.ListCreateAPIView):
+class StateList(generics.ListCreateAPIView):
     queryset = State.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = StateSerializer
 
 class StateDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = State.objects.all()
     serializer_class = StateSerializer
+
+class ShelterList(generics.ListCreateAPIView):
+    queryset = Shelter.objects.all()
+    serializer_class = ShelterSerializer
+
+class ShelterDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Shelter.objects.all()
+    serializer_class = ShelterSerializer
+
+class CanineList(generics.ListCreateAPIView):
+    queryset = Canine.objects.all()
+    serializer_class = CanineSerializer
+
+class CanineDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Canine.objects.all()
+    serializer_class = CanineSerializer
+
+class FelineList(generics.ListCreateAPIView):
+    queryset = Feline.objects.all()
+    serializer_class = FelineSerializer
+
+class FelineDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Feline.objects.all()
+    serializer_class = FelineSerializer
+
+class UserCaninesList(generics.ListCreateAPIView):
+    queryset = UserCanines.objects.all()
+    serializer_class = UserCaninesSerializer
+
+class UserCaninesDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserCanines.objects.all()
+    serializer_class = UserCaninesSerializer
+
+class UserFelinesList(generics.ListCreateAPIView):
+    queryset = UserFelines.objects.all()
+    serializer_class = UserFelinesSerializer
+
+class UserFelinesDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserFelines.objects.all()
+    serializer_class = UserFelinesSerializer
+
+# class UserViewSet(viewsets.ViewSet):
+
+
+
 
 # def state_list(request):
 #     states = State.objects.all()

@@ -1,14 +1,14 @@
 from django.db import models
 
 class User(models.Model):
-    canine = models.ForeignKey(Canine, 
-    on_delete=models.CASCADE, 
-    related_name='users',
-    default= models.CharField(max_length=100, default='canine_id'))
-    feline = models.ForeignKey(Feline, 
-    on_delete=models.CASCADE, 
-    related_name='users',
-    default= models.CharField(max_length=100, default= 'feline_id'))
+    # canine = models.ForeignKey(Canine, 
+    # on_delete=models.CASCADE, 
+    # related_name='users',
+    # default= models.CharField(max_length=100, default='canine_id'))
+    # feline = models.ForeignKey(Feline, 
+    # on_delete=models.CASCADE, 
+    # related_name='users',
+    # default= models.CharField(max_length=100, default= 'feline_id'))
     userName = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
@@ -35,7 +35,7 @@ class Shelter(models.Model):
 class Canine(models.Model):
     user = models.ForeignKey(User, 
     on_delete=models.CASCADE, 
-    related_name='canines', default=1, null = True, blank = True) 
+    related_name='canines', null = True, blank = True) 
     shelter = models.ForeignKey(Shelter, 
     on_delete=models.CASCADE, 
     related_name='canines', 
@@ -43,7 +43,7 @@ class Canine(models.Model):
     dogName = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     age = models.CharField(max_length=2)
-    photo_url = models.CharField(max_length=200, default = "no dice!")
+    photo_url = models.CharField(max_length=400, default = "no dice!")
     userCanine = models.ManyToManyField(User, through='UserCanines')
 
     def __str__(self):
@@ -52,7 +52,7 @@ class Canine(models.Model):
 class Feline(models.Model):
     user = models.ForeignKey(User, 
     on_delete=models.CASCADE, 
-    related_name='felines', default=1, null = True, blank = True)
+    related_name='felines', null = True, blank = True)
     shelter = models.ForeignKey(Shelter, 
     on_delete=models.CASCADE, 
     related_name='felines', 
@@ -60,7 +60,7 @@ class Feline(models.Model):
     catName = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     age = models.CharField(max_length=2)
-    photo_url = models.CharField(max_length=200, default = "no dice!")
+    photo_url = models.CharField(max_length=400, default = "no dice!")
     userFeline = models.ManyToManyField(User, through='UserFelines')
 
     def __str__(self):
