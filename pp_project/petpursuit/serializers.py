@@ -36,7 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
     #    fields = ('__all__')
     #    extra_fields = ('canines', 'felines')
 
-class CanineSerializer(serializers.HyperlinkedModelSerializer):
+class CanineSerializer(serializers.ModelSerializer):
     user = serializers.HyperlinkedRelatedField(
     view_name='UserDetail',
     many=True,
@@ -50,11 +50,11 @@ class CanineSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
        model = Canine
-       fields = ('dogName', 'breed', 'age', 'photo_url', 'userCanine', 'user', 'shelter')
+       fields = ('id', 'dogName', 'breed', 'age', 'photo_url', 'userCanine', 'user', 'shelter')
     #    fields = ('__all__')
     #    extra_fields = ('User', 'Shelter')
 
-class FelineSerializer(serializers.HyperlinkedModelSerializer):
+class FelineSerializer(serializers.ModelSerializer):
     user = serializers.HyperlinkedRelatedField(
         view_name='UserDetail',
         many=True,
@@ -68,45 +68,45 @@ class FelineSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
        model = Feline
-       fields = ('catName', 'breed', 'age', 'photo_url', 'userFeline', 'user', 'shelter')
+       fields = ('id', 'catName', 'breed', 'age', 'photo_url', 'userFeline', 'user', 'shelter')
     #    fields = ('__all__')
     #    extra_fields = ('User', 'Shelter')
 
+
+class ShelterSerializer(serializers.ModelSerializer):
+    state = serializers.HyperlinkedRelatedField(
+        view_name='StateDetail',
+        many=False,
+        read_only=True
+    )
+    canines = CanineSerializer(
+        # view_name='CanineDetail',
+        many=True,
+        read_only=True
+    )
+    felines = FelineSerializer(
+        # view_name='FelineDetail',
+        many=True,
+        read_only=True
+    )
+    class Meta:
+       model = Shelter
+       fields = ('id', 'shelterName', 'website', 'state', 'canines', 'felines')
+    #    fields = ('__all__')
+    #    extra_fields = ('State')
+
 class StateSerializer(serializers.ModelSerializer):
-    shelters = serializers.HyperlinkedRelatedField(
-        view_name='ShelterDetail',
+    shelters = ShelterSerializer(
+        # view_name='ShelterDetail',
         many=True,
         read_only=True,
     )
 
     class Meta:
        model = State
-       fields = ('stateName', 'shelters')
+       fields = ('id','stateName', 'shelters')
 
-class ShelterSerializer(serializers.HyperlinkedModelSerializer):
-    state = serializers.HyperlinkedRelatedField(
-        view_name='StateDetail',
-        many=False,
-        read_only=True
-    )
-    canines = serializers.HyperlinkedRelatedField(
-        view_name='CanineDetail',
-        many=True,
-        read_only=True
-    )
-    felines = serializers.HyperlinkedRelatedField(
-        view_name='FelineDetail',
-        many=True,
-        read_only=True
-    )
-
-    class Meta:
-       model = Shelter
-       fields = ('shelterName', 'website', 'state', 'canines', 'felines')
-    #    fields = ('__all__')
-    #    extra_fields = ('State')
-
-class UserFelinesSerializer(serializers.HyperlinkedModelSerializer):
+class UserFelinesSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='user_id')
     feline = FelineSerializer(read_only=True, source='feline_id')
 
@@ -116,7 +116,7 @@ class UserFelinesSerializer(serializers.HyperlinkedModelSerializer):
     #    fields = ('__all__')
     #    extra_fields = ('user', 'feline')
 
-class UserCaninesSerializer(serializers.HyperlinkedModelSerializer):
+class UserCaninesSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, source='user_id')
     canine = CanineSerializer(read_only=True, source='canine_id')
 

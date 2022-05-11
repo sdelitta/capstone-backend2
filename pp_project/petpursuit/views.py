@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from rest_framework import generics, permissions
+from rest_framework import generics, status, permissions
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer, StateSerializer, ShelterSerializer, CanineSerializer, FelineSerializer, UserCaninesSerializer, UserFelinesSerializer
@@ -25,10 +26,16 @@ class UserCreate(APIView):
             user = serializer.save()
             if user:
                 json = serializer.data
+                print(json)
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class LogoutUser(APIView):
+class UserDetailByUsername(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'username'
+
+class UserLogout(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
 
