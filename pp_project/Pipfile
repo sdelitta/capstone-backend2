@@ -10,6 +10,8 @@ djangorestframework = "*"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 python-dotenv = "*"
+pylint-django = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

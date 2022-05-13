@@ -1,3 +1,4 @@
+import pkgutil
 from django.shortcuts import render, redirect
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
@@ -5,8 +6,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer, StateSerializer, ShelterSerializer, CanineSerializer, FelineSerializer, UserCaninesSerializer, UserFelinesSerializer
 from .models import State, Shelter, User, Canine, Feline, UserCanines, UserFelines
+# from forms import UserForm
 
 class UserList(APIView):
+    queryset = User.objects.all()
     def get(self, request):
         users = User.objects.all()
         return Response(users)
@@ -29,6 +32,31 @@ class UserCreate(APIView):
                 print(json)
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserEdit(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
+
+    def user_edit(self, request, format='json'):
+        print(request)
+        serializer = UserSerializer(data=request.data)
+        if request.method == "POST":
+            user = UserDetail(request.POST, instance=user)
+            # user.save()
+            return redirect('user_detail', user=request.payload.user, pk=request.payload.user.id)
+        # else:
+        #     render(request, 'petpursuit/user_details.html')
+
+# def user_edit(request, pkgutil):
+#     user = User.objects.get(pk=pk)
+#     if request.method == "POST":
+#         form = UserForm(request.POST, instance=user)
+#         if form.is_valid():
+#             user = form.save()
+#             return redirect('user_detail', pk=user.pk)
+#     else:
+#         form = UserForm(instance=user)
+#     return render(request, 'tunr/user_form.html', {'form': form})
 
 class UserDetailByUsername(generics.RetrieveAPIView):
     queryset = User.objects.all()
@@ -101,51 +129,7 @@ class UserFelinesDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserFelines.objects.all()
     serializer_class = UserFelinesSerializer
 
-# class UserViewSet(viewsets.ViewSet):
 
-
-
-
-# def state_list(request):
-#     states = State.objects.all()
-#     return render(request, 'petpursuit/state_list.html', {'states': states})
-
-# def shelter_list(request):
-#     shelters = Shelter.objects.all()
-#     return render(request, 'petpursuit/shelter_list.html', {'shelters': shelters})
-
-# def user_list(request):
-#     users = User.objects.all()
-#     return render(request, 'petpursuit/user_list.html', {'users': users})
-
-# def canine_list(request):
-#     canines = Canine.objects.all()
-#     return render(request, 'petpursuit/canine_list.html', {'canines': canines})
-
-# def feline_list(request):
-#     felines = Feline.objects.all()
-#     return render(request, 'petpursuit/feline_list.html', {'felines': felines})
-
-
-# def canine_detail(request, pk):
-#     canine = Canine.objects.get(id=pk)
-#     return render(request, 'petpursuit/canine_detail.html', {'canine': canine})
-
-# def feline_detail(request, pk):
-#     feline = Feline.objects.get(id=pk)
-#     return render(request, 'petpursuit/feline_detail.html', {'feline': feline})
-
-# def shelter_detail(request, pk):
-#     shelter = Shelter.objects.get(id=pk)
-#     return render(request, 'petpursuit/shelter_detail.html', {'shelter': shelter})
-
-# def state_detail(request, pk):
-#     state = State.objects.get(id=pk)
-#     return render(request, 'petpursuit/state_detail.html', {'state': state})
-
-# def user_detail(request, pk):
-#     user = User.objects.get(id=pk)
-#     return render(request, 'petpursuit/user_detail.html', {'user': user})
 
 
 # def user_create(request):

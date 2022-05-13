@@ -42,8 +42,8 @@ class CanineSerializer(serializers.ModelSerializer):
     many=True,
     read_only=True
     )
-    shelter = serializers.HyperlinkedRelatedField(
-    view_name='ShelterDetail',
+    shelter = serializers.StringRelatedField(
+    # view_name='ShelterDetail',
     many=False,
     read_only=True
     )
@@ -52,7 +52,7 @@ class CanineSerializer(serializers.ModelSerializer):
        model = Canine
        fields = ('id', 'dogName', 'breed', 'age', 'photo_url', 'userCanine', 'user', 'shelter')
     #    fields = ('__all__')
-    #    extra_fields = ('User', 'Shelter')
+    #    extra_fields = ('shelterName')
 
 class FelineSerializer(serializers.ModelSerializer):
     user = serializers.HyperlinkedRelatedField(
@@ -60,10 +60,10 @@ class FelineSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
-    shelter = serializers.HyperlinkedRelatedField(
-        view_name='ShelterDetail',
+    shelter = serializers.StringRelatedField(
+        # view_name='ShelterDetail',
         many=False,
-        read_only=True
+        # read_only=True
     )
 
     class Meta:
