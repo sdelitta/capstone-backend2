@@ -21,11 +21,11 @@ urlpatterns = [
     
     path('users/', views.UserList.as_view(), name='user_list'),
     path('users/create', views.UserCreate.as_view(), name='user_create'),
-    path('users/logout', views.UserLogout.as_view(), name='user_logout'),
-    path('users/<int:pk>', views.UserDetail.as_view(), name='user_detail'),
+    path('users/logout', views.UserLogout.as_view(), name='UserLogout'),
+    path('users/<int:pk>', views.UserDetail.as_view(), name='UserDetail'),
     path('users/<str:username>', views.UserDetailByUsername.as_view(), name='user_detail_by_username'),
 
-    # path('users/<int:pk>/edit', views.user_edit.as_view(), name='user_edit')
+    path('users/canines/<int:pk>', views.UserCaninesDetail.as_view(), name='UserCaninesDetail')
 
     # path('users/create', views.UserCreate.as_view(), name='UserCreate'),
     # path('users/', views.UserList.as_view(), name='UserList'),

@@ -14,10 +14,20 @@ class UserList(APIView):
         users = User.objects.all()
         return Response(users)
 
-class UserDetail(generics.RetrieveAPIView):
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'id'
+    lookup_field = 'pk'
+
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                print(json)
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -33,30 +43,7 @@ class UserCreate(APIView):
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserEdit(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = ()
 
-    def user_edit(self, request, format='json'):
-        print(request)
-        serializer = UserSerializer(data=request.data)
-        if request.method == "POST":
-            user = UserDetail(request.POST, instance=user)
-            # user.save()
-            return redirect('user_detail', user=request.payload.user, pk=request.payload.user.id)
-        # else:
-        #     render(request, 'petpursuit/user_details.html')
-
-# def user_edit(request, pkgutil):
-#     user = User.objects.get(pk=pk)
-#     if request.method == "POST":
-#         form = UserForm(request.POST, instance=user)
-#         if form.is_valid():
-#             user = form.save()
-#             return redirect('user_detail', pk=user.pk)
-#     else:
-#         form = UserForm(instance=user)
-#     return render(request, 'tunr/user_form.html', {'form': form})
 
 class UserDetailByUsername(generics.RetrieveAPIView):
     queryset = User.objects.all()
