@@ -12,6 +12,7 @@ djangorestframework-simplejwt = "*"
 python-dotenv = "*"
 pylint-django = "*"
 psycopg2 = "*"
+numpy = "*"
 
 [dev-packages]
 

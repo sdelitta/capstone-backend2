@@ -75,8 +75,10 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
-        instance.canines = validated_data.get('canines', instance.canines)
-        instance.felines = validated_data.get('felines', instance.felines)
+        instance.canines = validated_data.get('canines', instance.canines.set())
+        instance.felines = validated_data.get('felines', instance.felines.set())
+        instance.canines.set()
+        instance.felines.set()
         instance.save()
         return instance
 

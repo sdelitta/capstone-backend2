@@ -1,4 +1,5 @@
 import pkgutil
+import numpy as np
 from django.shortcuts import render, redirect
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
@@ -20,9 +21,12 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
 
     def post(self, request, format='json'):
-        serializer = UserSerializer(data=request.data)
+        print("TEST")
+        dogvar = np.array(request.body.data)
+        print(dogvar)
+        serializer = UserSerializer(dogvar)
         if serializer.is_valid():
-            user = serializer.save()
+            user = serializer.add()
             if user:
                 json = serializer.data
                 print(json)
